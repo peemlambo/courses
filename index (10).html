@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KnowledgeEmpowers — Fractions</title>
+<style>
+  :root {
+    --bg: #f7f7fb;
+    --panel: #ffffff;
+    --text: #1b1d29;
+    --muted: #5b5f73;
+    --border: #e3e4ec;
+    --accent: #4f5bd5;
+    --accent-soft: #eef0fd;
+    --mild: #2f9e6e;
+    --mild-soft: #e6f6ef;
+    --medium: #c07a12;
+    --medium-soft: #fbf0dd;
+    --spicy: #c0392b;
+    --spicy-soft: #fbeae7;
+    --shadow: 0 1px 2px rgba(20,20,40,0.04), 0 6px 20px rgba(20,20,40,0.06);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #14151f;
+      --panel: #1c1e2b;
+      --text: #eceefb;
+      --muted: #a2a5bd;
+      --border: #2c2f42;
+      --accent: #8b93ff;
+      --accent-soft: #262a49;
+      --mild: #59d6a0;
+      --mild-soft: #1c3329;
+      --medium: #f0b74e;
+      --medium-soft: #3a2f16;
+      --spicy: #ff8b7a;
+      --spicy-soft: #3a221f;
+      --shadow: 0 1px 2px rgba(0,0,0,0.2), 0 6px 24px rgba(0,0,0,0.35);
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+  }
+  .wrap {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 32px 20px 80px;
+  }
+  header.app-header {
+    margin-bottom: 28px;
+  }
+  .eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--accent);
+    margin: 0 0 6px;
+  }
+  h1 {
+    font-size: 30px;
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+  .status-line {
+    color: var(--muted);
+    font-size: 14px;
+    margin-top: 10px;
+  }
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    box-shadow: var(--shadow);
+    padding: 20px 22px;
+    margin-bottom: 20px;
+  }
+  .card h2 {
+    font-size: 18px;
+    margin: 0 0 12px;
+  }
+  .card h3 {
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+    margin: 18px 0 8px;
+  }
+  .card h3:first-of-type { margin-top: 0; }
+  ul.plain { margin: 0; padding-left: 20px; }
+  ul.plain li { margin-bottom: 6px; }
+  .misconception {
+    border-left: 3px solid var(--accent);
+    background: var(--accent-soft);
+    border-radius: 0 8px 8px 0;
+    padding: 10px 14px;
+    margin-bottom: 10px;
+  }
+  .misconception:last-child { margin-bottom: 0; }
+  .misconception .myth { font-weight: 600; margin: 0 0 4px; }
+  .misconception .correction { margin: 0; color: var(--muted); font-size: 14px; }
+  .hook-title { font-weight: 700; margin: 0 0 4px; }
+  .hook-desc { margin: 0; color: var(--muted); font-size: 14px; }
+
+  .tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 18px;
+    flex-wrap: wrap;
+  }
+  .tab-btn {
+    appearance: none;
+    border: 1px solid var(--border);
+    background: var(--panel);
+    color: var(--text);
+    padding: 9px 18px;
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .tab-btn[aria-selected="true"] {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+  }
+
+  .big-idea {
+    white-space: pre-line;
+    color: var(--text);
+    font-size: 15px;
+  }
+
+  .example {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+  }
+  .example:last-child { margin-bottom: 0; }
+  .example .problem { font-weight: 600; margin: 0 0 8px; }
+  details { margin-top: 4px; }
+  summary {
+    cursor: pointer;
+    color: var(--accent);
+    font-size: 13px;
+    font-weight: 600;
+    user-select: none;
+  }
+  .steps { margin: 10px 0 0; padding-left: 20px; color: var(--muted); font-size: 14px; }
+  .answer-pill {
+    display: inline-block;
+    margin-top: 10px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-weight: 700;
+    font-size: 13px;
+    padding: 4px 10px;
+    border-radius: 999px;
+  }
+
+  .question {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+  }
+  .question:last-child { margin-bottom: 0; }
+  .question .prompt { margin: 0 0 8px; font-weight: 500; }
+
+  .tier-filters { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .tier-chip {
+    appearance: none;
+    border: 1px solid var(--border);
+    background: var(--panel);
+    color: var(--text);
+    padding: 7px 14px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    text-transform: capitalize;
+  }
+  .tier-chip[data-active="true"][data-tier="mild"] { background: var(--mild-soft); color: var(--mild); border-color: var(--mild); }
+  .tier-chip[data-active="true"][data-tier="medium"] { background: var(--medium-soft); color: var(--medium); border-color: var(--medium); }
+  .tier-chip[data-active="true"][data-tier="spicy"] { background: var(--spicy-soft); color: var(--spicy); border-color: var(--spicy); }
+  .tier-chip[data-active="true"][data-tier="all"] { background: var(--accent-soft); color: var(--accent); border-color: var(--accent); }
+
+  .tier-badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    padding: 2px 8px;
+    border-radius: 999px;
+    margin-bottom: 8px;
+  }
+  .tier-badge.mild { background: var(--mild-soft); color: var(--mild); }
+  .tier-badge.medium { background: var(--medium-soft); color: var(--medium); }
+  .tier-badge.spicy { background: var(--spicy-soft); color: var(--spicy); }
+
+  .error {
+    color: var(--spicy);
+    font-size: 14px;
+  }
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="app-header">
+    <p class="eyebrow">KnowledgeEmpowers</p>
+    <h1 id="topic-name">Loading topic…</h1>
+    <p class="status-line" id="status-line"></p>
+  </header>
+
+  <section class="card" id="launchpad-card"></section>
+
+  <section class="card" id="phases-card">
+    <h2>Lesson</h2>
+    <div class="tabs" id="phase-tabs"></div>
+    <div id="phase-content"></div>
+  </section>
+
+  <section class="card" id="practice-card">
+    <h2>Independent Practice</h2>
+    <div class="tier-filters" id="tier-filters"></div>
+    <div id="practice-content"></div>
+  </section>
+</div>
+
+<script>
+(function () {
+  var TOPIC_PATH = 'data/topics/fractions.json';
+  var statusLine = document.getElementById('status-line');
+
+  fetch(TOPIC_PATH)
+    .then(function (res) {
+      if (!res.ok) throw new Error('Could not load ' + TOPIC_PATH + ' (HTTP ' + res.status + ')');
+      return res.json();
+    })
+    .then(renderTopic)
+    .catch(function (err) {
+      document.getElementById('topic-name').textContent = 'Failed to load topic';
+      statusLine.innerHTML = '<span class="error">' + escapeHtml(err.message) +
+        '. This page must be served over http(s) — opening it directly as a file:// URL blocks the fetch. Try running a local static server (e.g. `python3 -m http.server`) from the repo root.</span>';
+    });
+
+  function escapeHtml(str) {
+    var div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  function el(tag, opts) {
+    var node = document.createElement(tag);
+    opts = opts || {};
+    if (opts.class) node.className = opts.class;
+    if (opts.html !== undefined) node.innerHTML = opts.html;
+    if (opts.text !== undefined) node.textContent = opts.text;
+    return node;
+  }
+
+  function renderTopic(topic) {
+    document.getElementById('topic-name').textContent = topic.name;
+    statusLine.textContent = 'Foundation → Intermediate → Senior, plus mixed independent practice.';
+    renderLaunchpad(topic.launchpad);
+    renderPhases(topic.phases);
+    renderPractice(topic.independentPractice.questions);
+  }
+
+  function renderLaunchpad(lp) {
+    var card = document.getElementById('launchpad-card');
+
+    var intentions = el('div');
+    intentions.appendChild(el('h3', { text: 'Learning intentions' }));
+    var ul = el('ul', { class: 'plain' });
+    lp.learningIntentions.forEach(function (li) { ul.appendChild(el('li', { text: li })); });
+    intentions.appendChild(ul);
+    card.appendChild(intentions);
+
+    var prereq = el('div');
+    prereq.appendChild(el('h3', { text: 'Prerequisite check' }));
+    var ul2 = el('ul', { class: 'plain' });
+    lp.prerequisiteCheck.forEach(function (q) { ul2.appendChild(el('li', { text: q })); });
+    prereq.appendChild(ul2);
+    card.appendChild(prereq);
+
+    var misc = el('div');
+    misc.appendChild(el('h3', { text: 'Common misconceptions' }));
+    lp.misconceptions.forEach(function (m) {
+      var box = el('div', { class: 'misconception' });
+      box.appendChild(el('p', { class: 'myth', text: '"' + m.myth + '"' }));
+      box.appendChild(el('p', { class: 'correction', text: m.correction }));
+      misc.appendChild(box);
+    });
+    card.appendChild(misc);
+
+    var hook = el('div');
+    hook.appendChild(el('h3', { text: '5-minute hook: ' + lp.hook.title }));
+    hook.appendChild(el('p', { class: 'hook-desc', text: lp.hook.description }));
+    card.appendChild(hook);
+  }
+
+  function renderPhases(phases) {
+    var order = ['foundation', 'intermediate', 'senior'];
+    var tabsEl = document.getElementById('phase-tabs');
+    var contentEl = document.getElementById('phase-content');
+
+    order.forEach(function (key, i) {
+      var phase = phases[key];
+      var btn = el('button', { class: 'tab-btn', text: phase.label });
+      btn.setAttribute('role', 'tab');
+      btn.setAttribute('aria-selected', i === 0 ? 'true' : 'false');
+      btn.addEventListener('click', function () {
+        tabsEl.querySelectorAll('.tab-btn').forEach(function (b) { b.setAttribute('aria-selected', 'false'); });
+        btn.setAttribute('aria-selected', 'true');
+        renderPhaseBody(contentEl, phase);
+      });
+      tabsEl.appendChild(btn);
+    });
+
+    renderPhaseBody(contentEl, phases[order[0]]);
+  }
+
+  function renderPhaseBody(container, phase) {
+    container.innerHTML = '';
+
+    container.appendChild(el('h3', { text: 'Big idea' }));
+    container.appendChild(el('p', { class: 'big-idea', text: phase.bigIdea }));
+
+    container.appendChild(el('h3', { text: 'Worked examples' }));
+    phase.workedExamples.forEach(function (ex) {
+      var box = el('div', { class: 'example' });
+      box.appendChild(el('p', { class: 'problem', text: ex.problem }));
+      var details = el('details');
+      details.appendChild(el('summary', { text: 'Show worked solution' }));
+      var stepsList = el('ol', { class: 'steps' });
+      ex.steps.forEach(function (s) { stepsList.appendChild(el('li', { text: s })); });
+      details.appendChild(stepsList);
+      var pill = el('span', { class: 'answer-pill', text: 'Answer: ' + ex.answer });
+      details.appendChild(pill);
+      box.appendChild(details);
+      container.appendChild(box);
+    });
+
+    container.appendChild(el('h3', { text: 'Questions' }));
+    phase.questions.forEach(function (q) {
+      container.appendChild(buildQuestionCard(q));
+    });
+  }
+
+  function buildQuestionCard(q, tier) {
+    var box = el('div', { class: 'question' });
+    if (tier) {
+      box.appendChild(el('span', { class: 'tier-badge ' + tier, text: tier }));
+    }
+    box.appendChild(el('p', { class: 'prompt', text: q.prompt }));
+    var details = el('details');
+    details.appendChild(el('summary', { text: 'Reveal answer' }));
+    var stepsList = el('ol', { class: 'steps' });
+    q.steps.forEach(function (s) { stepsList.appendChild(el('li', { text: s })); });
+    details.appendChild(stepsList);
+    var pill = el('span', { class: 'answer-pill', text: 'Answer: ' + q.answer });
+    details.appendChild(pill);
+    box.appendChild(details);
+    return box;
+  }
+
+  function renderPractice(questions) {
+    var filtersEl = document.getElementById('tier-filters');
+    var contentEl = document.getElementById('practice-content');
+    var tiers = ['all', 'mild', 'medium', 'spicy'];
+    var active = 'all';
+
+    tiers.forEach(function (tier) {
+      var chip = el('button', { class: 'tier-chip', text: tier });
+      chip.setAttribute('data-tier', tier);
+      chip.setAttribute('data-active', tier === 'all' ? 'true' : 'false');
+      chip.addEventListener('click', function () {
+        active = tier;
+        filtersEl.querySelectorAll('.tier-chip').forEach(function (c) {
+          c.setAttribute('data-active', c.getAttribute('data-tier') === active ? 'true' : 'false');
+        });
+        draw();
+      });
+      filtersEl.appendChild(chip);
+    });
+
+    function draw() {
+      contentEl.innerHTML = '';
+      questions
+        .filter(function (q) { return active === 'all' || q.tier === active; })
+        .forEach(function (q) { contentEl.appendChild(buildQuestionCard(q, q.tier)); });
+    }
+
+    draw();
+  }
+})();
+</script>
+</body>
+</html>
